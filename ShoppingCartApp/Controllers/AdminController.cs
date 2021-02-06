@@ -6,12 +6,11 @@ using System.Threading.Tasks;
 
 namespace ShoppingCartApp.Controllers
 {
-    public class CustomerController : Controller
+    public class AdminController : Controller
     {
         public IActionResult Index()
         {
             return View();
         }
-
     }
 }

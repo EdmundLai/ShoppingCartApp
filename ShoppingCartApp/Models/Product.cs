@@ -16,6 +16,6 @@ namespace ShoppingCartApp.Models
         public string ProductName { get; set; }
 
         [DataType(DataType.Currency)]
-        public float ProductCost { get; set; }
+        public decimal ProductCost { get; set; }
     }
 }
