@@ -32,6 +32,7 @@ namespace ShoppingCartApp
             services.AddDbContext<ShoppingAppContext>(options =>
                 options.UseSqlServer(Configuration.GetConnectionString("ShoppingAppContext")));
 
+            // added identity service to be used by Role controller
             services.AddIdentity<IdentityUser, IdentityRole>(options => options.SignIn.RequireConfirmedAccount = false)
                  .AddDefaultUI()
                  .AddEntityFrameworkStores<ShoppingCartAppContext>()

@@ -19,6 +19,7 @@ namespace ShoppingCartApp.Areas.Identity
                     options.UseSqlServer(
                         context.Configuration.GetConnectionString("ShoppingCartAppContextConnection")));
 
+                // we comment this out in order to add a IdentityUser and IdentityRole service in the main Startup.cs file
                 //services.AddDefaultIdentity<IdentityUser>(options => options.SignIn.RequireConfirmedAccount = true)
                 //    .AddEntityFrameworkStores<ShoppingCartAppContext>();
             });
