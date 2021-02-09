@@ -1,26 +1,6 @@
 USE [ShoppingAppContext-1]
 GO
 
-INSERT INTO [dbo].[UserRoles]
-           ([UserRoleName])
-     VALUES
-           ('Customer'),
-	       ('Admin')
-GO
-
-INSERT INTO [dbo].[Users]
-           ([UserRoleId]
-           ,[Username]
-           ,[Password])
-     VALUES
-           (1
-           , 'Bob'
-           , 'customer'),
-		   (2
-           , 'Tom'
-           , 'admin')
-GO
-
 INSERT INTO [dbo].[Categories]
            ([CategoryName])
      VALUES
@@ -56,7 +36,7 @@ INSERT INTO [dbo].[Products]
 		   (4
            , 'Tale of Two Cities',
            15),
-		   (3
+		   (4
            , 'Moby Dick',
            20)
 

@@ -1,0 +1,29 @@
+﻿@model IEnumerable<Product>
+@{
+    Layout = "~/Views/Shared/_Layout_Admin.cshtml";
+    ViewData["Title"] = "Index";
+}
+
+<h1>List of Roles</h1>
+<a asp-action="Create">Create</a>
+<table class="table table-striped table-bordered">
+    <thead>
+        <tr>
+            <td>Product Id</td>
+            <td>Category Id</td>
+            <td>Product Name</td>
+            <td>Product Cost</td>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var product in Model)
+        {
+        <tr>
+            <td>@product.ProductId</td>
+            <td>@product.CategoryId</td>
+            <td>@product.ProductName</td>
+            <td>@product.ProductCost</td>
+        </tr>
+        }
+    </tbody>
+</table>

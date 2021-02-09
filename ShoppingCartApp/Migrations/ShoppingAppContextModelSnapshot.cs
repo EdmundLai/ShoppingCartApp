@@ -66,8 +66,8 @@ namespace ShoppingCartApp.Migrations
                     b.Property<int>("CategoryId")
                         .HasColumnType("int");
 
-                    b.Property<float>("ProductCost")
-                        .HasColumnType("real");
+                    b.Property<decimal>("ProductCost")
+                        .HasColumnType("decimal(11,2)");
 
                     b.Property<string>("ProductName")
                         .HasColumnType("nvarchar(max)");
@@ -86,53 +86,12 @@ namespace ShoppingCartApp.Migrations
                         .HasColumnType("int")
                         .UseIdentityColumn();
 
-                    b.Property<int>("UserId")
-                        .HasColumnType("int");
+                    b.Property<string>("UserId")
+                        .HasColumnType("nvarchar(max)");
 
                     b.HasKey("ShoppingCartId");
 
-                    b.HasIndex("UserId")
-                        .IsUnique();
-
                     b.ToTable("ShoppingCarts");
-                });
-
-            modelBuilder.Entity("ShoppingCartApp.Models.User", b =>
-                {
-                    b.Property<int>("UserId")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int")
-                        .UseIdentityColumn();
-
-                    b.Property<string>("Password")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<int>("UserRoleId")
-                        .HasColumnType("int");
-
-                    b.Property<string>("Username")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.HasKey("UserId");
-
-                    b.HasIndex("UserRoleId");
-
-                    b.ToTable("Users");
-                });
-
-            modelBuilder.Entity("ShoppingCartApp.Models.UserRole", b =>
-                {
-                    b.Property<int>("UserRoleId")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int")
-                        .UseIdentityColumn();
-
-                    b.Property<string>("UserRoleName")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.HasKey("UserRoleId");
-
-                    b.ToTable("UserRoles");
                 });
 
             modelBuilder.Entity("ShoppingCartApp.Models.CartItem", b =>
@@ -157,28 +116,6 @@ namespace ShoppingCartApp.Migrations
                     b.Navigation("Category");
                 });
 
-            modelBuilder.Entity("ShoppingCartApp.Models.ShoppingCart", b =>
-                {
-                    b.HasOne("ShoppingCartApp.Models.User", "User")
-                        .WithOne("ShoppingCart")
-                        .HasForeignKey("ShoppingCartApp.Models.ShoppingCart", "UserId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.Navigation("User");
-                });
-
-            modelBuilder.Entity("ShoppingCartApp.Models.User", b =>
-                {
-                    b.HasOne("ShoppingCartApp.Models.UserRole", "UserRole")
-                        .WithMany("Users")
-                        .HasForeignKey("UserRoleId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.Navigation("UserRole");
-                });
-
             modelBuilder.Entity("ShoppingCartApp.Models.Category", b =>
                 {
                     b.Navigation("Products");
@@ -187,16 +124,6 @@ namespace ShoppingCartApp.Migrations
             modelBuilder.Entity("ShoppingCartApp.Models.ShoppingCart", b =>
                 {
                     b.Navigation("CartItems");
-                });
-
-            modelBuilder.Entity("ShoppingCartApp.Models.User", b =>
-                {
-                    b.Navigation("ShoppingCart");
-                });
-
-            modelBuilder.Entity("ShoppingCartApp.Models.UserRole", b =>
-                {
-                    b.Navigation("Users");
                 });
 #pragma warning restore 612, 618
         }
