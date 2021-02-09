@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
 using ShoppingCartApp.Models;
 using System;
@@ -23,23 +24,7 @@ namespace ShoppingCartApp.Controllers
             return View();
         }
 
-        public IActionResult SignIn()
-        {
-            return View();
-        }
-
-        public IActionResult RegisterUser()
-        {
-            return View();
-        }
-
-        public IActionResult SubmitNewUser()
-        {
-            //Console.WriteLine();
-
-            return Content($"user: {Request.Form["name"]} and password: {Request.Form["password"]} ");
-        }
-
+        [Authorize]
         public IActionResult Privacy()
         {
             return View();

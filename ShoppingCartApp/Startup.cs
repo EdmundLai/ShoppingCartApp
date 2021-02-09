@@ -11,6 +11,7 @@ using System.Threading.Tasks;
 
 using ShoppingCartApp.Data;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.AspNetCore.Identity;
 
 namespace ShoppingCartApp
 {
@@ -30,6 +31,11 @@ namespace ShoppingCartApp
 
             services.AddDbContext<ShoppingAppContext>(options =>
                 options.UseSqlServer(Configuration.GetConnectionString("ShoppingAppContext")));
+
+            services.AddIdentity<IdentityUser, IdentityRole>(options => options.SignIn.RequireConfirmedAccount = false)
+                 .AddDefaultUI()
+                 .AddEntityFrameworkStores<ShoppingCartAppContext>()
+                 .AddDefaultTokenProviders();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -50,6 +56,8 @@ namespace ShoppingCartApp
 
             app.UseRouting();
 
+            // added to enable Microsoft Identity Authentication flow
+            app.UseAuthentication();
             app.UseAuthorization();
 
             app.UseEndpoints(endpoints =>
@@ -57,6 +65,9 @@ namespace ShoppingCartApp
                 endpoints.MapControllerRoute(
                     name: "default",
                     pattern: "{controller=Home}/{action=Index}/{id?}");
+
+                // added to support scaffolded Identity item
+                endpoints.MapRazorPages();
             });
         }
     }
