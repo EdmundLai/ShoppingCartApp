@@ -1,4 +1,5 @@
 ﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
 using ShoppingCartApp.Models;
@@ -14,15 +15,45 @@ namespace ShoppingCartApp.Controllers
     {
         private readonly ILogger<HomeController> _logger;
 
-        public HomeController(ILogger<HomeController> logger)
+        private readonly UserManager<IdentityUser> _userManager;
+
+        private readonly RoleManager<IdentityRole> _roleManager;
+
+        public HomeController(ILogger<HomeController> logger, UserManager<IdentityUser> userManager, RoleManager<IdentityRole> roleManager)
         {
             _logger = logger;
+            _userManager = userManager;
+            _roleManager = roleManager;
         }
 
-        public IActionResult Index()
+        public async Task<IActionResult> Index()
         {
+            IdentityUser user = await GetCurrentUserAsync();
+
+            //ViewData["userRoles"] = new List<string>();
+
+            if(user != null)
+            {
+                List<string> userRoles = (await _userManager.GetRolesAsync(user)).ToList();
+
+                //ViewData["userRoles"] = userRoles;
+
+                if (userRoles.Contains("Admin"))
+                {
+                    return RedirectToAction("Index", "Admin");
+                } else
+                {
+                    return RedirectToAction("Index", "Customer");
+                }
+            }
+
+            //ViewData["user"] = user?.UserName ?? "User";
+
+            // only occurs when user is not logged in
             return View();
         }
+
+        private Task<IdentityUser> GetCurrentUserAsync() => _userManager.GetUserAsync(HttpContext.User);
 
         [Authorize]
         public IActionResult Privacy()
