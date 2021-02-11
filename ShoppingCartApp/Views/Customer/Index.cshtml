@@ -1,10 +1,13 @@
 ﻿@{
     Layout = "~/Views/Shared/_Layout_Customer.cshtml";
     ViewData["Title"] = "Home Page";
+    var uid = ViewData["uid"];
 }
 
 <div class="text-center">
     
     <h1 class="display-4">Welcome, Customer, to Shopping Cart!</h1>
+
+    <p>USER ID:@uid</p>
     
 </div>

@@ -11,7 +11,7 @@ namespace ShoppingCartApp.Controllers
     [Authorize(Roles = "Admin")]
     public class UserController : Controller
     {
-        UserManager<IdentityUser> userManager;
+        private readonly UserManager<IdentityUser> userManager;
 
         public UserController(UserManager<IdentityUser> userManager)
         {

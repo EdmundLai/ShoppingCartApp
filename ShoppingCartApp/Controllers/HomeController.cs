@@ -28,7 +28,7 @@ namespace ShoppingCartApp.Controllers
 
         public async Task<IActionResult> Index()
         {
-            IdentityUser user = await GetCurrentUserAsync();
+            IdentityUser user = await _userManager.GetUserAsync(User);
 
             //ViewData["userRoles"] = new List<string>();
 
@@ -52,8 +52,6 @@ namespace ShoppingCartApp.Controllers
             // only occurs when user is not logged in
             return View();
         }
-
-        private Task<IdentityUser> GetCurrentUserAsync() => _userManager.GetUserAsync(HttpContext.User);
 
         [Authorize]
         public IActionResult Privacy()
