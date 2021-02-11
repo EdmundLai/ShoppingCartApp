@@ -15,7 +15,7 @@ namespace ShoppingCartApp.Controllers
     {
         ShoppingAppContext _shoppingAppContext;
 
-        public ShoppingCartController(UserManager<IdentityUser> userManager, ShoppingAppContext shoppingAppContext)
+        public ShoppingCartController(ShoppingAppContext shoppingAppContext)
         {
             _shoppingAppContext = shoppingAppContext;
         }

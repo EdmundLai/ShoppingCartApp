@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Logging;
 using ShoppingCartApp.Data;
@@ -10,9 +11,9 @@ using System.Threading.Tasks;
 
 namespace ShoppingCartApp.Controllers
 {
+    [Authorize(Roles="Admin")]
     public class ProductController : Controller
     {
-
         private readonly ILogger<ProductController> _logger;
 
         ShoppingAppContext _shoppingAppContext;

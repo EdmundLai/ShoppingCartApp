@@ -51,9 +51,9 @@ namespace ShoppingCartApp.Controllers
         {
             await CreateShoppingCartIfNotExists();
 
-            var uid = _userManager.GetUserId(User);
+            string username = _userManager.GetUserName(User);
 
-            ViewData["uid"] = uid;
+            ViewData["username"] = username;
 
             return View();
         }
