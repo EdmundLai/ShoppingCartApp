@@ -5,9 +5,9 @@ INSERT INTO [dbo].[Categories]
            ([CategoryName])
      VALUES
            ('Food'),
-		   ('Games'),
-		   ('Electronics'),
-		   ('Books')
+           ('Games'),
+           ('Electronics'),
+           ('Books')
 GO
 
 INSERT INTO [dbo].[Products]
@@ -18,25 +18,25 @@ INSERT INTO [dbo].[Products]
            (1
            , 'Swiss Cheese',
            5),
-		   (1
+           (1
            , 'Steak',
            10),
-		   (2
+           (2
            , 'Monopoly',
            20),
-		   (2
+           (2
            , 'Chess Set',
            25),
-		   (3
+           (3
            , 'Flat Screen TV',
            500),
-		   (3
+           (3
            , 'High Fidelity Headphones',
            200),
-		   (4
+           (4
            , 'Tale of Two Cities',
            15),
-		   (4
+           (4
            , 'Moby Dick',
            20)
 

@@ -9,6 +9,9 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 
+using Azure.Security.KeyVault.Secrets;
+using Azure.Identity;
+
 using ShoppingCartApp.Data;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.AspNetCore.Identity;
@@ -29,8 +32,25 @@ namespace ShoppingCartApp
         {
             services.AddControllersWithViews();
 
+            string localShoppingAppContextString = $"Server=(localdb)\\mssqllocaldb;Database=ShoppingAppContext-1;Trusted_Connection=True;MultipleActiveResultSets=true";
+            
+            string keyVaultUrl = "https://shoppingcartapp.vault.azure.net/";
+
+            var client = new SecretClient(vaultUri: new Uri(keyVaultUrl), credential: new DefaultAzureCredential());
+
+            string serverName = client.GetSecret("serverName").Value.Value;
+            string mainDbName = client.GetSecret("mainDbName").Value.Value;
+            string username = client.GetSecret("sql-username").Value.Value;
+            string password = client.GetSecret("sql-password").Value.Value;
+
+            string cloudShoppingAppContextString = $"Server={serverName}.database.windows.net;Database={mainDbName};user id={username};" +
+                $"password={password};MultipleActiveResultSets=true";
+
+            //services.AddDbContext<ShoppingAppContext>(options =>
+            //    options.UseSqlServer(Configuration.GetConnectionString("ShoppingAppContext")));
+
             services.AddDbContext<ShoppingAppContext>(options =>
-                options.UseSqlServer(Configuration.GetConnectionString("ShoppingAppContext")));
+                options.UseSqlServer(cloudShoppingAppContextString));
 
             // added identity service to be used by Role controller
             services.AddIdentity<IdentityUser, IdentityRole>(options => options.SignIn.RequireConfirmedAccount = false)
