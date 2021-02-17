@@ -7,8 +7,10 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using ShoppingCartApp.Data;
 
-using Azure.Security.KeyVault.Secrets;
-using Azure.Identity;
+//using Microsoft.Azure.KeyVault.Secrets;
+
+using Microsoft.Azure.Services.AppAuthentication;
+using Microsoft.Azure.KeyVault;
 
 [assembly: HostingStartup(typeof(ShoppingCartApp.Areas.Identity.IdentityHostingStartup))]
 namespace ShoppingCartApp.Areas.Identity
@@ -18,14 +20,16 @@ namespace ShoppingCartApp.Areas.Identity
         public void Configure(IWebHostBuilder builder)
         {
 
-            string keyVaultUrl = "https://shoppingcartapp.vault.azure.net/";
+            var azureServiceTokenProvider = new AzureServiceTokenProvider();
+            var kv = new KeyVaultClient(new KeyVaultClient.AuthenticationCallback(azureServiceTokenProvider.KeyVaultTokenCallback));
 
-            var client = new SecretClient(vaultUri: new Uri(keyVaultUrl), credential: new DefaultAzureCredential());
+            string keyVaultUrl = "https://shoppingcartapp.vault.azure.net/secrets";
 
-            string serverName = client.GetSecret("serverName").Value.Value;
-            string usersDbName = client.GetSecret("usersDbName").Value.Value;
-            string username = client.GetSecret("sql-username").Value.Value;
-            string password = client.GetSecret("sql-password").Value.Value;
+            string serverName = kv.GetSecretAsync($"{keyVaultUrl}/serverName").Result.Value;
+            string usersDbName = kv.GetSecretAsync($"{keyVaultUrl}/usersDbName").Result.Value;
+            string username = kv.GetSecretAsync($"{keyVaultUrl}/sql-username").Result.Value;
+            string password = kv.GetSecretAsync($"{keyVaultUrl}/sql-password").Result.Value;
+
 
             string cloudUsersDbConnectionString = $"Server={serverName}.database.windows.net;Database={usersDbName};user id={username};" +
                 $"password={password};MultipleActiveResultSets=true";

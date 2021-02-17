@@ -9,12 +9,12 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 
-using Azure.Security.KeyVault.Secrets;
-using Azure.Identity;
-
 using ShoppingCartApp.Data;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.AspNetCore.Identity;
+using Microsoft.Azure.Services.AppAuthentication;
+using Azure.Identity;
+using Microsoft.Azure.KeyVault;
 
 namespace ShoppingCartApp
 {
@@ -32,16 +32,20 @@ namespace ShoppingCartApp
         {
             services.AddControllersWithViews();
 
-            string localShoppingAppContextString = $"Server=(localdb)\\mssqllocaldb;Database=ShoppingAppContext-1;Trusted_Connection=True;MultipleActiveResultSets=true";
-            
-            string keyVaultUrl = "https://shoppingcartapp.vault.azure.net/";
+            //string localShoppingAppContextString = $"Server=(localdb)\\mssqllocaldb;Database=ShoppingAppContext-1;Trusted_Connection=True;MultipleActiveResultSets=true";
 
-            var client = new SecretClient(vaultUri: new Uri(keyVaultUrl), credential: new DefaultAzureCredential());
+            var azureServiceTokenProvider = new AzureServiceTokenProvider();
 
-            string serverName = client.GetSecret("serverName").Value.Value;
-            string mainDbName = client.GetSecret("mainDbName").Value.Value;
-            string username = client.GetSecret("sql-username").Value.Value;
-            string password = client.GetSecret("sql-password").Value.Value;
+            string keyVaultUrl = "https://shoppingcartapp.vault.azure.net/secrets";
+
+            //var sc = new SecretClient(keyVaultUrl, new DefaultAzureCredential())
+
+            var kv = new KeyVaultClient(new KeyVaultClient.AuthenticationCallback(azureServiceTokenProvider.KeyVaultTokenCallback));
+
+            string serverName = kv.GetSecretAsync($"{keyVaultUrl}/serverName").Result.Value;
+            string mainDbName = kv.GetSecretAsync($"{keyVaultUrl}/mainDbName").Result.Value;
+            string username = kv.GetSecretAsync($"{keyVaultUrl}/sql-username").Result.Value;
+            string password = kv.GetSecretAsync($"{keyVaultUrl}/sql-password").Result.Value;
 
             string cloudShoppingAppContextString = $"Server={serverName}.database.windows.net;Database={mainDbName};user id={username};" +
                 $"password={password};MultipleActiveResultSets=true";
